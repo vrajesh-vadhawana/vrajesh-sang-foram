@@ -1,4 +1,4 @@
-import { db, collection, getDocs, orderBy, query } from './firebase-config.js';
+import { db, collection, getDocs, orderBy, query } from './config.js';
 
 document.addEventListener('DOMContentLoaded', async function () {
     try {
@@ -280,3 +280,4 @@ document.addEventListener('DOMContentLoaded', async function () {
         console.error("Global script error:", globalErr);
     }
 });
+
