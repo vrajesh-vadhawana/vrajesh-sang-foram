@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      // -----------------------------------------------------------------------
+      // DEVELOPMENT MODE: OPEN ACCESS
+      // -----------------------------------------------------------------------
+      // This allows ANYONE to read and write to your database.
+      // Required for your current 'Upload' button to work without User Login.
+      // 
+      // For a real production app, you should add Firebase Authentication
+      // and change this to: allow write: if request.auth != null;
+      // -----------------------------------------------------------------------
+      // -----------------------------------------------------------------------
+      // PASSWORD PROTECTION
+      // -----------------------------------------------------------------------
+      // Only allow creation if the correct secret is provided in the document data.
+      allow create: if request.resource.data.uploadSecret == 'vr@jVahalu';
+      
+      // Allow read to everyone so the album can be viewed.
+      allow read: if true;
+      
+      // Deny other writes (update/delete) for now to be safe, or add password check there too.
+      // For this simple case, we only need to secure the upload (create).
+      allow update, delete: if false;
+    }
+  }
+}

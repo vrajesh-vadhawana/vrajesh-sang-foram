@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Memory - Luxury Wedding Album</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400&family=Pinyon+Script&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cormorant Garamond', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100%;
+            background-color: #e0e0e0;
+            background-image: url("./wooden_desk.png");
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: multiply;
+            color: #333;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.7) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .upload-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .upload-card {
+            background: #fffcf5;
+            background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow:
+                0 20px 50px -10px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(0, 0, 0, 0.05);
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .upload-card::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 2px double #d4af37;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            color: #4a4a4a;
+            font-size: 4rem;
+            margin: 0 0 10px 0;
+            font-weight: 400;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        p.subtitle {
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.7rem;
+            color: #888;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #d4af37;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 35px;
+            text-align: left;
+            position: relative;
+            z-index: 2;
+        }
+
+        label {
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #a08d7d;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #d4af37;
+            color: #333;
+            font-family: 'Pinyon Script', cursive;
+            font-size: 2rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]::placeholder {
+            color: #ccc;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .select-wrapper::after {
+            content: '▼';
+            font-size: 0.8rem;
+            color: #d4af37;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(255, 252, 245, 0.4);
+            border: 1px solid #d4af37;
+            border-radius: 2px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: dimgray;
+            cursor: pointer;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        select:hover {
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15);
+        }
+
+        select:focus {
+            border-color: #bfa15f;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            border: 1px dashed #d4af37;
+            background: rgba(212, 175, 55, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload-wrapper:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: #8a7a6a;
+            font-style: italic;
+            pointer-events: none;
+        }
+
+        .file-upload-icon {
+            font-size: 2rem;
+            color: #d4af37;
+            margin-bottom: 10px;
+        }
+
+        #fileList {
+            margin-top: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            color: #555;
+            text-align: center;
+        }
+
+        .upload-btn {
+            background: radial-gradient(circle at 30% 30%, #ffd700, #d4af37, #996515);
+            border: none;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin: 40px auto 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.2),
+                inset 0 2px 5px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .upload-btn::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .upload-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .upload-btn:disabled {
+            filter: grayscale(1);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            min-height: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        .status.loading {
+            color: #d4af37;
+        }
+
+        .status.success {
+            color: #558b2f;
+        }
+
+        .status.error {
+            color: #c62828;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            color: #888;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+            position: relative;
+            z-index: 20;
+        }
+
+        .back-link:hover {
+            color: #d4af37;
+        }
+
+        @media (max-width: 600px) {
+            .upload-container {
+                padding: 10px;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .upload-card {
+                padding: 30px 20px;
+                width: 100%;
+                max-height: 95vh;
+                overflow-y: auto;
+            }
+
+            h1 {
+                font-size: 2.8rem;
+            }
+
+            p.subtitle {
+                font-size: 0.6rem;
+                margin-bottom: 25px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+                padding: 0px 15px;
+            }
+
+            .file-upload-wrapper {
+                height: 100px;
+            }
+
+            .file-upload-icon {
+                font-size: 1.5rem;
+            }
+
+            input[type="text"] {
+                font-size: 1.5rem;
+            }
+
+            .upload-btn {
+                width: 70px;
+                height: 70px;
+                margin: 25px auto 15px;
+                font-size: 0.8rem;
+            }
+
+            .back-link {
+                margin-top: 20px;
+            }
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .upload-btn.loading {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body>
+
+    <div class="upload-container">
+        <div class="upload-card">
+            <h1>Add Memory</h1>
+
+            <div class="form-group">
+                <label>Select Moments</label>
+                <div class="select-wrapper">
+                    <select id="categoryInput">
+                        <option value="" disabled selected>Choose a Moment Type...</option>
+                        <option value="bhet-padhramni">Bhet Padhrauni</option>
+                        <option value="kanku-pagla">Kanku Pagla</option>
+                        <option value="birthday-celebration">Birthday Celebration</option>
+                        <option value="family-trip">Family Trip</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Select Photos</label>
+                <div class="file-upload-wrapper">
+                    <div class="file-upload-icon">+</div>
+                    <div class="file-upload-text">Click or Drag photos here</div>
+                    <input type="file" id="photoInput" accept="image/*" multiple onchange="updateFileList()">
+                </div>
+                <div id="fileList"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Secret Password</label>
+                <input type="password" id="passwordInput" placeholder="**********"
+                    style="width: 100%; padding: 10px 0; background: transparent; border: none; border-bottom: 1px solid #d4af37; color: #333; font-family: 'Montserrat', sans-serif; font-size: 1.2rem; outline: none;">
+            </div>
+
+            <button id="uploadBtn" class="upload-btn" onclick="handleUpload()">
+                <i class="fa-solid fa-upload"></i>
+            </button>
+
+
+            <div id="status" class="status"></div>
+
+            <a href="index.html" class="back-link">&larr; Return to Album</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db, collection, addDoc } from './firebase-config.js';
+
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx8EZ7apssoEX9i5OQ5978oRg5IZa4ak24coOd2aqdJlrzNTlQS3TgaWISplMtANz3t-A/exec";
+
+        window.updateFileList = function () {
+            const input = document.getElementById('photoInput');
+            const list = document.getElementById('fileList');
+            if (input.files.length > 0) {
+                list.innerText = `${input.files.length} photo(s) selected`;
+            } else {
+                list.innerText = "";
+            }
+        }
+
+        window.handleUpload = async function () {
+            const categoryInput = document.getElementById('categoryInput');
+            const fileInput = document.getElementById('photoInput');
+            const passwordInput = document.getElementById('passwordInput');
+            const btn = document.getElementById('uploadBtn');
+            const statusDiv = document.getElementById('status');
+
+            const category = categoryInput.value;
+            const password = passwordInput.value;
+
+            if (!category) {
+                statusDiv.innerText = "Please select a category.";
+                statusDiv.className = "status error";
+                return;
+            }
+
+            if (fileInput.files.length === 0) {
+                statusDiv.innerText = "Please select at least one photo.";
+                statusDiv.className = "status error";
+                return;
+            }
+
+            if (!password) {
+                statusDiv.innerText = "Please enter the secret password.";
+                statusDiv.className = "status error";
+                return;
+            }
+
+            const files = Array.from(fileInput.files);
+
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>';
+            btn.classList.add('loading');
+            statusDiv.className = "status loading";
+
+            let successCount = 0;
+            let errorCount = 0;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                statusDiv.innerText = `Uploading ${i + 1} of ${files.length}...`;
+
+                try {
+                    const base64 = await toBase64(file);
+
+                    const formData = new FormData();
+                    formData.append('data', base64);
+                    formData.append('mimetype', file.type);
+                    formData.append('filename', file.name);
+
+                    const response = await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status !== 'success') {
+                        throw new Error(result.message || 'Upload Failed');
+                    }
+
+                    const imageUrl = result.url;
+
+                    await addDoc(collection(db, "photos"), {
+                        url: imageUrl,
+                        caption: "",
+                        category: category,
+                        order: Date.now(),
+                        timestamp: new Date(),
+                        uploadSecret: password
+                    });
+
+                    successCount++;
+
+                } catch (error) {
+                    console.error(error);
+                    errorCount++;
+                }
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = "Save";
+            btn.classList.remove('loading');
+
+            if (errorCount === 0) {
+                statusDiv.innerText = `(${successCount}) photos are added successfully to album`;
+                statusDiv.className = "status success";
+                fileInput.value = "";
+                document.getElementById('fileList').innerText = "";
+            } else {
+                statusDiv.innerText = `${successCount} saved, ${errorCount} failed.`;
+                statusDiv.className = "status error";
+            }
+        };
+
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+        });
+    </script>
+</body>
+
+</html>
