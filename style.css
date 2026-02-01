@@ -173,7 +173,7 @@ body {
 }
 
 .image-wrapper img {
-    width: 100%;
+    width: auto;
     height: 100%;
     object-fit: cover;
     display: block;
@@ -557,4 +557,5 @@ body {
     .lightbox-content img {
         max-height: calc(85vh - 16px);
     }
+
 }
