@@ -97,10 +97,10 @@
             <div class="filter-container-nav">
                 <div class="select-wrapper-nav">
                     <select id="categoryFilter">
-                        <option value="bhet-padhramni">Bhet Padhramni</option>
-                        <option value="kanku-pagla">Kanku Pagla</option>
-                        <option value="birthday-celebration">Birthday Celebration</option>
                         <option value="family-trip">Family Trip</option>
+                        <option value="birthday-celebration">Birthday Celebration</option>
+                        <option value="kanku-pagla">Kanku Pagla</option>
+                        <option value="bhet-padhramni">Bhet Padhramni</option>  
                     </select>
                 </div>
             </div>
@@ -119,7 +119,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    
     <title>Vrajesh & Foram - Our Story</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -131,6 +132,37 @@
     <link rel="stylesheet" href="style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
+     <script>
+        function updateViewportScale() {
+            const height = window.innerHeight;
+            let newScale;
+            if (height <= 600) {
+                newScale = '0.6'
+            }
+            else if (height >= 600 && height <= 685) {
+                newScale = '0.7';
+            }
+            else if (height > 685 && height < 770) {
+                newScale = '0.8';
+            } else if (height >= 770 && height <= 810) {
+                newScale = '0.9';
+            } else {
+                newScale = '1.0';
+            }
+            const oldViewportMeta = document.getElementById('viewportMeta');
+            if (oldViewportMeta) {
+
+                oldViewportMeta.parentNode.removeChild(oldViewportMeta);
+            }
+            const newViewportMeta = document.createElement('meta');
+            newViewportMeta.name = 'viewport';
+            newViewportMeta.id = 'viewportMeta';
+            newViewportMeta.content = `width=device-width, initial-scale=${newScale}, user-scalable=no`;
+            document.head.appendChild(newViewportMeta);
+        }
+        window.onload = updateViewportScale;
+
+    </script>
 </head>
 
 <body>
@@ -142,7 +174,7 @@
                     <h1 class="cover-title">Our Story</h1>
                     <div class="cover-subtitle">Written in Destiny</div>
                     <div class="cover-names">Vrajesh & Foram</div>
-                    <div class="cover-subtitle" style="margin-top: auto; border: none;">Bhet Padhrauni</div>
+                    <div class="cover-subtitle" style="margin-top: auto; border: none;">Bhet Padhramni</div>
                 </div>
             </div>
         </div>
@@ -180,11 +212,10 @@
             <div class="filter-container-nav">
                 <div class="select-wrapper-nav">
                     <select id="categoryFilter">
-                        <option value="bhet-padhramni">Bhet Padhrauni</option>
+                        <option value="bhet-padhramni">Bhet Padhramni</option>
                         <option value="kanku-pagla">Kanku Pagla</option>
                         <option value="birthday-celebration">Birthday Celebration</option>
                         <option value="family-trip">Family Trip</option>
-                        <option value="Other">Other</option>
                     </select>
                 </div>
             </div>
@@ -195,5 +226,5 @@
 
 </body>
 
-
 </html> -->
+
